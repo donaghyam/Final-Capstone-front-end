@@ -19,6 +19,18 @@ export const NavBar = () => {
           <>
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
+            <div className="navbar-item">
+                  <Link to="/recipes" className="navbar-item">Recipes</Link>
+            </div>
+            <div className="navbar-item">
+                  <Link to="/createrecipe" className="navbar-item">Create Recipe</Link>
+            </div>
+            <div className="navbar-item">
+                  <Link to="/inventory" className="navbar-item">My inventory</Link>
+            </div>
+            <div className="navbar-item">
+                  <Link to="/mybrews" className="navbar-item">My Brews</Link>
+            </div>
           </>
       }
     </nav>

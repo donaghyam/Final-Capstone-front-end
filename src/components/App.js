@@ -4,9 +4,10 @@ import { ApplicationViews } from "./ApplicationViews"
 import { NavBar } from "./nav/NavBar"
 import { Login } from "./auth/Login"
 import { Register } from "./auth/Register"
+import { AppContainer } from "./styles/Containers.style"
 
 export const App = () => (
-    <>
+    <AppContainer>
         <Route render={() => {
             if (localStorage.getItem("auth_token")) {
                 return <>
@@ -28,5 +29,5 @@ export const App = () => (
             <Register />
         </Route>
 
-    </>
+    </AppContainer>
 )
