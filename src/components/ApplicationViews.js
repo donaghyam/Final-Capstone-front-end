@@ -1,18 +1,19 @@
 import React from "react"
 import { Route } from "react-router-dom"
+import { InventoryList } from "./inventory/InventoryList"
 import { RecipeDetails } from "./recipes/RecipeDetails"
 import { RecipeList } from "./recipes/RecipeList"
-import { useState } from "react"
-
-const [selectedRecipe, setSelectedRecipe] = useState()
 
 export const ApplicationViews = () => {
     return <>
-        <Route exact path="/recipe_details">
-            <RecipeDetails selectedRecipe={selectedRecipe}/>
+        <Route exact path="/recipe_details/:recipeId(\d+)">
+            <RecipeDetails />
         </Route>
         <Route exact path="/recipes">
-            <RecipeList setSelectedRecipe={setSelectedRecipe}/>
+            <RecipeList />
+        </Route>
+        <Route exact path="/inventory">
+            <InventoryList />
         </Route>
     </>
 }

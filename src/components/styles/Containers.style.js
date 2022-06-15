@@ -7,9 +7,10 @@ export const AppContainer = styled.div`
 `
 
 export const ContentContainer = styled.div`
-    width: 50vw;
-    height: 50vh;
+    width: 90vw;
+    height: 90vh;
     background-color: white;
+
 `
 
 export const RecipeCard = styled.div`

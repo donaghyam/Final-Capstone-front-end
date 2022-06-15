@@ -4,9 +4,9 @@ import { Label, SubHeader } from "../styles/Text.style"
 import { getAllRecipes, getRecipesByInventory } from "./RecipeManager"
 import { Link, useHistory } from "react-router-dom"
 
-export const RecipeList = ({setSelectedRecipe}) => {
+export const RecipeList = () => {
     const [recipes, setRecipes] = useState([])
-    const [inventoryFilter, setFilerStatus] = useState(false)
+    const [inventoryFilter, setFilterStatus] = useState(false)
     const history = useHistory()
 
     useEffect(
@@ -18,8 +18,14 @@ export const RecipeList = ({setSelectedRecipe}) => {
             getAllRecipes()
             .then(setRecipes)
         },
-        []
+        [inventoryFilter]
     )
+
+    const toggleFilter = () => {
+        inventoryFilter ?
+        setFilterStatus(false)
+        : setFilterStatus(true)
+    }
 
     return (
 
@@ -29,17 +35,16 @@ export const RecipeList = ({setSelectedRecipe}) => {
                         type="checkbox"
                         htmlFor="filter"
                         id="inventoryFilter"
-                        onChange={setFilerStatus(true)}
+                        onClick={() => {
+                            toggleFilter()}}
                 />
                 <Label>Filter by inventory</Label>
             </>
             {recipes.map(
                 (r) => {
                         return <RecipeCard>
-                            <button onClick={() => setSelectedRecipe(r.id)
-                            .then(history.push("/recipe_details"))}>
-                                <SubHeader>{r.name}</SubHeader>
-                            </button>
+                            <button onClick={() => history.push(`/recipe_details/${r.id}`
+                            )}> {r.name} </button>
                         </RecipeCard>
                 })}
         </ContentContainer>
