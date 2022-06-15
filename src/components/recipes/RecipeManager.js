@@ -6,7 +6,7 @@ export const getAllRecipes = () => {
 }
 
 export const getSingleRecipe = (id) => {
-  return fetchIt(`${Settings.API}/posts/${id}`);
+  return fetchIt(`${Settings.API}/recipes/${id}`);
 };
 
 export const deleteRecipe = (id) => {
