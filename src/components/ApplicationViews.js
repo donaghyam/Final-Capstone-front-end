@@ -1,6 +1,7 @@
 import React from "react"
 import { Route } from "react-router-dom"
 import { InventoryList } from "./inventory/InventoryList"
+import { CreateRecipe } from "./recipes/CreateRecipe"
 import { RecipeDetails } from "./recipes/RecipeDetails"
 import { RecipeList } from "./recipes/RecipeList"
 
@@ -14,6 +15,9 @@ export const ApplicationViews = () => {
         </Route>
         <Route exact path="/inventory">
             <InventoryList />
+        </Route>
+        <Route exact path="/createrecipe">
+            <CreateRecipe />
         </Route>
     </>
 }

@@ -1,5 +1,6 @@
+import "/Users/adam/workspace/Final-Capstone-front-end/src/components/App.css"
 import { useState, useEffect } from "react"
-import { ContentContainer, RecipeCard } from "../styles/Containers.style"
+import { ColumnContainer, ContentContainer, ImageContainer, MainContent, RecipeCard, RowContainer } from "../styles/Containers.style"
 import { Label, SubHeader } from "../styles/Text.style"
 import { getAllRecipes, getRecipesByInventory } from "./RecipeManager"
 import { Link, useHistory } from "react-router-dom"
@@ -30,7 +31,8 @@ export const RecipeList = () => {
     return (
 
         <ContentContainer>
-            <>
+            <MainContent>
+                <div id="filterContainer">
                 <input name="filter"
                         type="checkbox"
                         htmlFor="filter"
@@ -38,15 +40,24 @@ export const RecipeList = () => {
                         onClick={() => {
                             toggleFilter()}}
                 />
-                <Label>Filter by inventory</Label>
-            </>
-            {recipes.map(
-                (r) => {
-                        return <RecipeCard>
-                            <button onClick={() => history.push(`/recipe_details/${r.id}`
-                            )}> {r.name} </button>
-                        </RecipeCard>
-                })}
+                <Label id="inventoryFilterLabel">Filter by inventory</Label>
+                </div>
+                <RowContainer>
+                {recipes.map(
+                    (r) => {
+                            return <ColumnContainer>
+                                        <RecipeCard>
+                                            <Link to={`/recipe_details/${r.id}`} className="recipeLink">
+                                                {r.name} 
+                                                <ImageContainer>
+                                                    <img src={`${r.style?.image}`}></img>
+                                                </ImageContainer>
+                                            </Link>
+                                        </RecipeCard>
+                                    </ColumnContainer>
+                    })}
+                    </RowContainer>
+            </MainContent>
         </ContentContainer>
     )
 }

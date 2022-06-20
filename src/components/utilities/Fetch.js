@@ -22,7 +22,7 @@ export const fetchIt = (url, method = "GET", body = null) => {
     }
     // adds body to request
     if (body !== null) {
-        options.body = body
+        options.body =  JSON.stringify(body)
     }
 
     // send request with options, convert response to json

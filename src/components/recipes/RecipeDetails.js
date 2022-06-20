@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
-import { ContentContainer } from "../styles/Containers.style"
+import { ContentContainer, DescriptionColumn, DescriptionContainer, Line, DescriptionContentColumn, DescriptionLabelColumn, MainContent, TableContainer } from "../styles/Containers.style"
 import { Table, TableBody, TableData, TableHeader, TableRow, TH } from "../styles/Tables.style"
-import { Content, Label, SubHeader } from "../styles/Text.style"
+import { Content, Label, SubHeader, Header } from "../styles/Text.style"
 import { getRecipeIngredients, getRecipeSteps, getSingleRecipe } from "./RecipeManager"
 
 export const RecipeDetails = () => {
@@ -43,54 +43,124 @@ export const RecipeDetails = () => {
     return (
 
         <ContentContainer>
-
+            <MainContent>
+        
             {/* list recipe stats */}
-            <SubHeader>{recipe.name}</SubHeader>
-            <Label>Description: </Label> 
-                <Content>{recipe.description}</Content>
-            <Label>Style: </Label> 
-                <Content>{recipe.style?.label}</Content>
-            <Label>Starting gravity: </Label> 
-                <Content>{recipe.starting_gravity}</Content>
-            <Label>Final gravity: </Label> 
-                <Content>{recipe.final_gravity}</Content>
-            <Label>ABV: </Label> 
-                <Content>{recipe.abv}</Content>
-            <Label>SRM: </Label> 
-                <Content>{recipe.srm}</Content>
-            <Label>Mash pH: </Label> 
-                <Content>{recipe.mash_ph}</Content>
-            <Label>Batch volume: </Label> 
-                <Content>{recipe.batch_volume}</Content>
-            <Label>Pre boil volume: </Label> 
-                <Content>{recipe.pre_boil_volume}</Content>
-            <Label>Boil time: </Label> 
-                <Content>{recipe.boil_time}</Content>
+            <Header>{recipe.name}</Header>
+
+            <DescriptionContainer>
+                <DescriptionLabelColumn>
+                    <Label>Description: </Label> 
+                </DescriptionLabelColumn>
+                <DescriptionContentColumn>
+                    <Content>{recipe.description}</Content>
+                </DescriptionContentColumn>
+            </DescriptionContainer>
+            <DescriptionContainer>
+                <DescriptionLabelColumn>
+                    <Label>Style: </Label> 
+                </DescriptionLabelColumn>
+                <DescriptionContentColumn>
+                    <Content>{recipe.style?.label}</Content>
+                </DescriptionContentColumn>
+            </DescriptionContainer>
+            <DescriptionContainer>
+                <DescriptionLabelColumn>
+                    <Label>Starting gravity: </Label> 
+                </DescriptionLabelColumn>
+                <DescriptionContentColumn>
+                    <Content>{recipe.starting_gravity}</Content>
+                </DescriptionContentColumn>
+            </DescriptionContainer>
+            <DescriptionContainer>
+                <DescriptionLabelColumn>
+                    <Label>Final gravity: </Label> 
+                </DescriptionLabelColumn>
+                <DescriptionContentColumn>
+                    <Content>{recipe.final_gravity}</Content>
+                </DescriptionContentColumn>
+            </DescriptionContainer>
+            <DescriptionContainer>
+                <DescriptionLabelColumn>
+                    <Label>ABV: </Label> 
+                </DescriptionLabelColumn>
+                <DescriptionContentColumn>
+                    <Content>{recipe.abv}</Content>
+                </DescriptionContentColumn>
+            </DescriptionContainer>
+            <DescriptionContainer>
+                <DescriptionLabelColumn>
+                    <Label>SRM: </Label> 
+                </DescriptionLabelColumn>
+                <DescriptionContentColumn>
+                    <Content>{recipe.srm}</Content>
+                </DescriptionContentColumn>
+            </DescriptionContainer>
+            <DescriptionContainer>
+                <DescriptionLabelColumn>
+                    <Label>Mash pH: </Label> 
+                </DescriptionLabelColumn>
+                <DescriptionContentColumn>
+                    <Content>{recipe.mash_ph}</Content>
+                </DescriptionContentColumn>
+            </DescriptionContainer>
+            <DescriptionContainer>
+                <DescriptionLabelColumn>
+                    <Label>Batch volume: </Label> 
+                </DescriptionLabelColumn>
+                <DescriptionContentColumn>
+                    <Content>{recipe.batch_volume}</Content>
+                </DescriptionContentColumn>
+            </DescriptionContainer>
+            <DescriptionContainer>
+                <DescriptionLabelColumn>
+                    <Label>Pre boil volume: </Label> 
+                </DescriptionLabelColumn>
+                <DescriptionContentColumn>
+                    <Content>{recipe.pre_boil_volume}</Content>
+                </DescriptionContentColumn>
+            </DescriptionContainer>
+            <DescriptionContainer>
+                <DescriptionLabelColumn>
+                    <Label>Boil time: </Label> 
+                </DescriptionLabelColumn>
+                <DescriptionContentColumn>
+                    <Content>{recipe.boil_time}</Content>
+                </DescriptionContentColumn>
+            </DescriptionContainer>
+            <Line></Line>
 
             {/* table for fermentables (malt) */}
             <SubHeader>Fermentables</SubHeader>
+            <TableContainer>
             <Table>
+                <TableBody>
                 <TableHeader>
                     <TableRow>
                         <TH>Amount</TH>
                         <TH>Fermentable</TH>
                     </TableRow>
                 </TableHeader>
-                <TableBody>
                     {ingredients.map(
                         (i) => {
                             if (i.ingredient.type === "Malt"){
                                 return <>
+                                <TableRow>
                                 <TableData>{convertUnits(parseInt(i.quantity))}</TableData>
                                 <TableData>{i.ingredient.name}</TableData>
+                                </TableRow>
                                 </>
                             }})}
                 </TableBody>
             </Table>
+            </TableContainer>
+            <Line></Line>
 
             {/* table for hops */}
             <SubHeader>Hops</SubHeader>
+            <TableContainer>
             <Table>
+                <TableBody>
                 <TableHeader>
                     <TableRow>
                         <TH>Amount</TH>
@@ -100,11 +170,11 @@ export const RecipeDetails = () => {
                         <TH>Time</TH>
                     </TableRow>
                 </TableHeader>
-                <TableBody>
                     {ingredients.map(
                         (i) => {
                             if (i.ingredient.type === "Hops"){
                                 return <>
+                                <TableRow>
                                 <TableData>{i.quantity} oz</TableData>
                                 <TableData>{i.ingredient.name}</TableData>
                                 <TableData>{i.ingredient.alpha_acids}</TableData>
@@ -113,39 +183,54 @@ export const RecipeDetails = () => {
                                 <TableData>{i.time} min</TableData>
                                 : <TableData>{i.time}</TableData>
                                 }
+                                </TableRow>
                                 </>
                             }})}
                 </TableBody>
             </Table>
+            </TableContainer>
+            <Line></Line>
 
             {/* table for mash guidelines (steps) */}
             <SubHeader>Mash Guidelines</SubHeader>
+            <TableContainer>
             <Table>
+                <TableBody>
                 <TableHeader>
                     <TableRow>
                         <TH>Amount</TH>
-                        <TH>Description</TH>
-                        <TH>Type</TH>
-                        <TH>Temp</TH>
+                        <TH>Temperature (°F)</TH>
                         <TH>Time</TH>
                     </TableRow>
                 </TableHeader>
-                <TableBody>
                     {steps.map(
                         (s) => {
-                            return <>
-                            <TableData>{s.amount} oz</TableData>
-                            <TableData>{s.description}</TableData>
-                            <TableData>{s.type}</TableData>
-                            <TableData>{s.temperature}</TableData>
-                            <TableData>{s.time}</TableData>
+                            if (s.amount === null){
+                                return <>
+                                <TableRow>
+                                <TableData>{s.amount}</TableData>
+                                <TableData>{s.temperature}</TableData>
+                                <TableData>{s.time}</TableData>
+                                </TableRow>
                             </>
+                            } else {
+                                return <>
+                                <TableRow>
+                                <TableData>{s.amount} gal</TableData>
+                                <TableData>{s.temperature}</TableData>
+                                <TableData>{s.time}</TableData>
+                                </TableRow>
+                                </>
+                            }
                         })}
                 </TableBody>
             </Table>
+            </TableContainer>
+            <Line></Line>
 
             {/* table for yeast */}
             <SubHeader>Yeast</SubHeader>
+            <TableContainer>
             <Table>
                 <TableBody>
                     <TableHeader>
@@ -158,12 +243,16 @@ export const RecipeDetails = () => {
                         (i) => {
                             if (i.ingredient.type === "Yeast"){
                                 return <>
+                                <TableRow>
                                 <TableData>{i.ingredient.name}</TableData>
                                 <TableData>{i.quantity}</TableData>
+                                </TableRow>
                                 </>
                             }})}
                 </TableBody>
             </Table>
+            </TableContainer>
+            </MainContent>
         </ContentContainer>
     )
 }

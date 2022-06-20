@@ -1,0 +1,164 @@
+@import url(https://www.freefonts.io/downloads/ramsey/);
+
+@font-face{ 
+    font-family: 'Ramsey'; 
+    src: 'https://www.freefonts.io/downloads/ramsey/';
+}
+
+#navContainer {
+    border-top: 5px solid #0B1320;
+    border-bottom: 5px solid #0B1320;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 0px;
+    background-color: #394D5F;
+}
+
+#titleContainer {
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    padding-bottom: 20px;
+    justify-content: center;
+    background-color: #FEF9E6;
+}
+
+#title {
+    font-size: 70px;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    /* font-family: 'Ramsey', sans-serif; */
+}
+
+#titleLink{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    width: 100%;
+    text-decoration: none;
+    color: #0B1320;
+    /* font-family: 'Ramsey', sans-serif; */
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 1;
+    margin-top: 18px;
+}
+
+#titleLink:hover{
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    opacity: 70%;
+}
+
+.navbar-item {
+    display: flex;
+    justify-content: space-between;
+    height: fit-content;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 1;
+    font-size: 15px;
+    padding: 0.25em 3em;
+}
+
+.navbar-link {
+    font-size: 18px;
+    text-decoration: none;
+    color: #FEF9E6;
+    border: 100px;
+    border-color: black;
+    border-radius: 5px;
+    padding: 0.25em 1em;
+    transition-duration: 0.4s;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.navbar-link:hover {
+    background-color: #FEF9E6;
+    opacity: 60%;
+    color: #394D5F;
+}
+
+#logoutContainer{
+    display: flex;
+    justify-content: end;
+    height: 0px;
+    margin-top: 0px;
+    background-color: #FEF9E6;
+}
+
+#logoutButton {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 1;
+    font-size: 15px;
+    text-decoration: none;
+    color: #482317;
+    background-color: #FEF9E6;
+    border: 100px;
+    border-color: white;
+    border-radius: 5px;
+    padding: 0.25em 2em;
+    transition-duration: 0.4s;
+}
+
+#logoutContainer:hover {
+    opacity: 50%;
+}
+
+#hexContainer {
+    padding-top: 5px;
+    margin-right: 20px;
+    margin-top: 0px;
+    height: 110px;
+    display: flex;
+}
+
+#letterH {
+    color: #0B1320;
+}
+
+#hContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 0px;
+    padding-top: 0px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 25px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 1;
+}
+
+.hex:before {
+    content: " ";
+    width: 0; height: 0;
+    border-bottom: 30px solid #96D294;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
+    position: absolute;
+    top: -30px;
+}
+
+.hex {
+    margin-top: 30px;
+    width: 104px;
+    height: 60px;
+    background-color: #96D294;
+    position: relative;
+    display: flex;
+}
+
+.hex:after {
+    content: "";
+    width: 0;
+    position: absolute;
+    bottom: -30px;
+    border-top: 30px solid #96D294;
+    border-left: 52px solid transparent;
+    border-right: 52px solid transparent;
+}
