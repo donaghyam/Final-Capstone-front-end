@@ -1,15 +1,16 @@
 import styled from "styled-components"
 
 export const Table = styled.table`
-    background-color: #394D5F;
+    /* background-color: #394D5F; */
+    background-color: #0B1320;
+    opacity: 85%;
     border: 1px solid;
     display: flex;
     width: fit-content;
-    
 `
 
 export const TableHeader = styled.thead`
-    
+    background-color: #FFB03A;
 `
 
 export const TableBody = styled.tbody`
@@ -34,4 +35,6 @@ export const TableData = styled.td`
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
 `

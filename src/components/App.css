@@ -139,5 +139,6 @@ button:hover {
     justify-content: center;
     font-family: 'Montserrat', sans-serif;
     font-weight: 1;
-    color: #FEF9E6;
+    color: #394D5F;
+    display: inline-block;
 }

@@ -43,13 +43,14 @@ export const ColumnContainer = styled.div`
 `
 
 export const RecipeCard = styled.div`
-    background-color: #394D5F;
+    background-color: white;
     height: 200px;
     width: 200px;
     margin: 10px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
+    border: 1px solid lightgrey;
 `
 
 export const ImageContainer = styled.div`
@@ -88,7 +89,9 @@ export const DescriptionContentColumn = styled.div`
 
 export const Line = styled.div`
     width: 100%;
-    border-bottom: 3px solid #394D5F;
+    height: 2px;
     margin-bottom: 5px;
-    opacity: 20%;
+    background-image: linear-gradient(60deg, #0B1320, #FFB03A);
+    background-clip: text;
+    color: transparent;
 `

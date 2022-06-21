@@ -2,13 +2,14 @@ import "/Users/adam/workspace/Final-Capstone-front-end/src/components/App.css"
 import { useState, useEffect } from "react"
 import { ContentContainer, MainContent, RecipeCard, Line } from "../styles/Containers.style"
 import { Label, SubHeader, Header, PageTitle } from "../styles/Text.style"
-import { addInventory, getIngredients, getInventory, updateInventory } from "./InventoryManager"
+import { addInventory, getIngredients, getInventory, updateInventory, deleteInventory } from "./InventoryManager"
 import { Table, TableBody, TableData, TableHeader, TableRow, TH } from "../styles/Tables.style"
 
 
 export const InventoryList = () => {
     const [inventory, setInventory] = useState([])
     const [ingredients, setIngredients] = useState([])
+    const [editing, setEditing] = useState(false)
     const [newIngredient, setNewIngredient] = useState({
         ingredient: 0,
         quantity: 0
@@ -16,34 +17,75 @@ export const InventoryList = () => {
 
     useEffect(
         () => {
-            getInventory()
-                .then(setInventory)
-            
-            .then(() => {
-                getIngredients()
-                    .then(setIngredients)
-            })
+            getIngredients()
+                .then(setIngredients)
         },
         []
     )
+
+    useEffect(
+        () => {
+            getInventory()
+                .then(setInventory)
+        },
+        []
+    )
+
+    // const checkInvToUpdate = () => {
+
+    //     let ingredientExists = false
+
+    //     for (const i of inventory) {
+    //         if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false && editing === false){
+    //             ingredientExists = true
+    //             const updatedIngredient = { ...i}
+    //             const newQuantity = newIngredient.quantity + i.quantity
+    //             updatedIngredient.quantity = newQuantity
+    //             updateInventory(updatedIngredient, i.id)
+    //         } else if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false && editing === true){
+    //             ingredientExists = true
+    //             updateInventory(newIngredient, i.id)
+    //                 .then(() => {
+    //                     setEditing(false)
+    //                     getInventory()
+    //                         .then(setInventory)
+
+    //                 })
+    //         }
+    //     }
+    //         if (ingredientExists === false){
+    //             addInventory(newIngredient)
+    //         }
+    // }
 
     const checkInvToUpdate = () => {
 
         let ingredientExists = false
 
         for (const i of inventory) {
-                if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false){
-                    ingredientExists = true
-                    const updatedIngredient = { ...i}
-                    const newQuantity = newIngredient.quantity + i.quantity
-                    updatedIngredient.quantity = newQuantity
-                    updateInventory(updatedIngredient, i.id)
-                }}
-
+            //update quantity
+            if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false && editing === false){
+                ingredientExists = true
+                const updatedIngredient = { ...i}
+                const newQuantity = newIngredient.quantity + i.quantity
+                updatedIngredient.quantity = newQuantity
+                updatedIngredient.ingredient = i.ingredient?.id
+                updateInventory(updatedIngredient, i.id)
+            //edit quantity
+            } else if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false && editing === true){
+                ingredientExists = true
+                updateInventory(newIngredient, i.id)
+                    .then(() => {
+                        setEditing(false)
+                        getInventory()
+                            .then(setInventory)
+                    })
+            }
+        }
             if (ingredientExists === false){
                 addInventory(newIngredient)
             }
-        }
+    }
 
     const convertUnits = (ingredient) => {
 
@@ -54,7 +96,18 @@ export const InventoryList = () => {
         } else {
             ingredient += " oz"
             return ingredient
-        }}
+        }
+    }
+    //convert quantity based on unit selected 
+    // const convertUnitToPost = (ingredientQuantity) => {
+
+    //     if (unit === "lb"){
+    //         const newIngredient = ingredientQuantity * 16
+    //         return newIngredient
+    //     } else {
+    //         return ingredientQuantity
+    //     }
+    // }
 
     return (
 
@@ -62,6 +115,7 @@ export const InventoryList = () => {
             <MainContent>
                 <PageTitle>Your inventory</PageTitle>
                 <Line></Line>
+
          {/* table for malt */}
         <Header>Malt</Header>
         <Table>
@@ -70,6 +124,7 @@ export const InventoryList = () => {
                 <TableRow>
                     <TH>Amount</TH>
                     <TH>Variety</TH>
+                    <TH>Actions</TH>
                 </TableRow>
             </TableHeader>
                 {inventory.map(
@@ -77,8 +132,39 @@ export const InventoryList = () => {
                         if (i.ingredient.type === "Malt"){
                             return <>
                             <TableRow>
-                            <TableData>{convertUnits(parseInt(i.quantity))}</TableData>
-                            <TableData>{i.ingredient.name}</TableData>
+                                {editing ? 
+                                    <TableData>
+                                        <input 
+                                            type="text" 
+                                            name="quantity" 
+                                            required="required" 
+                                            placeholder={`${i.quantity} oz.`}
+                                            onChange={(event) => {
+                                                const copy = { ...newIngredient}
+                                                copy.quantity = parseInt(event.target.value)
+                                                copy.ingredient = parseInt(i.ingredient.id)
+                                                setNewIngredient(copy)
+                                            }} />
+                                            <button onClick={()=> {
+                                                checkInvToUpdate()
+                                            }}>Update</button>
+                                    </TableData>
+                                :
+                                    <TableData>{convertUnits(parseInt(i.quantity))}</TableData>
+                                }
+                                <TableData>{i.ingredient.name}</TableData>
+                                <TableData>
+                                        <button onClick={() => {
+                                            editing ?
+                                            setEditing(false)
+                                            : setEditing(true)
+                                        }}>Edit quantity</button>
+                                        <button onClick={() => {
+                                            deleteInventory(i.id)
+                                                .then(getInventory)
+                                                    .then(setInventory)
+                                        }}>Delete item</button>
+                                </TableData>
                             </TableRow>
                             </>
                         }})}
@@ -125,6 +211,7 @@ export const InventoryList = () => {
                     <TH>Amount</TH>
                     <TH>Variety</TH>
                     <TH>Alpha acids</TH>
+                    <TH>Actions</TH>
                 </TableRow>
             </TableHeader>
                 {inventory.map(
@@ -132,9 +219,41 @@ export const InventoryList = () => {
                         if (i.ingredient.type === "Hops"){
                             return <>
                             <TableRow>
-                            <TableData>{i.quantity} oz</TableData>
-                            <TableData>{i.ingredient.name}</TableData>
-                            <TableData>{i.ingredient.alpha_acids}</TableData>
+                            {editing ? 
+                                    <TableData>
+                                        <input 
+                                            type="text" 
+                                            name="quantity" 
+                                            required="required" 
+                                            placeholder={`${i.quantity} oz.`}
+                                            onChange={(event) => {
+                                                const copy = { ...newIngredient}
+                                                copy.quantity = parseInt(event.target.value)
+                                                copy.ingredient = parseInt(i.ingredient.id)
+                                                setNewIngredient(copy)
+                                            }} />
+                                            <button onClick={()=> {
+
+                                                checkInvToUpdate()
+                                            }}>Update</button>
+                                    </TableData>
+                                :
+                                <TableData>{i.quantity} oz</TableData>
+                                }
+                                <TableData>{i.ingredient.name}</TableData>
+                                <TableData>{i.ingredient.alpha_acids}</TableData>
+                                <TableData>
+                                        <button onClick={() => {
+                                            editing ?
+                                            setEditing(false)
+                                            : setEditing(true)
+                                        }}>Edit quantity</button>
+                                        <button onClick={() => {
+                                            deleteInventory(i.id)
+                                                .then(getInventory)
+                                                    .then(setInventory)
+                                        }}>Delete item</button>
+                                </TableData>
                             </TableRow>
                             </>
                         }})}
@@ -179,6 +298,7 @@ export const InventoryList = () => {
                     <TableRow>
                         <TH>Variety</TH>
                         <TH>Amount</TH>
+                        <TH>Actions</TH>
                     </TableRow>
                 </TableHeader>
                 {inventory.map(
@@ -186,8 +306,40 @@ export const InventoryList = () => {
                         if (i.ingredient.type === "Yeast"){
                             return <>
                             <TableRow>
-                            <TableData>{i.ingredient.name}</TableData>
-                            <TableData>{i.quantity}</TableData>
+                            {editing ? 
+                                    <TableData>
+                                        <input 
+                                            type="text" 
+                                            name="quantity" 
+                                            required="required" 
+                                            placeholder={`${i.quantity} oz.`}
+                                            onChange={(event) => {
+                                                const copy = { ...newIngredient}
+                                                copy.quantity = parseInt(event.target.value)
+                                                copy.ingredient = parseInt(i.ingredient.id)
+                                                setNewIngredient(copy)
+                                            }} />
+                                            <button onClick={()=> {
+
+                                                checkInvToUpdate()
+                                            }}>Update</button>
+                                    </TableData>
+                                :
+                                <TableData>{i.quantity}</TableData>
+                                }
+                                <TableData>{i.ingredient.name}</TableData>
+                                <TableData>
+                                        <button onClick={() => {
+                                            editing ?
+                                            setEditing(false)
+                                            : setEditing(true)
+                                        }}>Edit quantity</button>
+                                        <button onClick={() => {
+                                            deleteInventory(i.id)
+                                                .then(getInventory)
+                                                    .then(setInventory)
+                                        }}>Delete item</button>
+                                </TableData>
                             </TableRow>
                             </>
                         }})}

@@ -3,18 +3,19 @@ import { ContentContainer, MainContent, DescriptionContainer, Line, DescriptionL
 import { Label, SubHeader, Header, Content } from "../styles/Text.style"
 import { Table, TableBody, TableData, TableHeader, TableRow, TH } from "../styles/Tables.style"
 import { getIngredients } from "../inventory/InventoryManager"
-import { createRecipe, createSteps, getNewestRecipe, getRecipeIngredients, getRecipeSteps, getStyles } from "./RecipeManager"
+import { createRecipe, createRecipeIngredients, createSteps, getNewestRecipe, getRecipeIngredients, getRecipeSteps, getStyles } from "./RecipeManager"
 
 export const CreateRecipe = () => {
     const [ingredients, setIngredients] = useState([])
     const [recipeIngredients, setRecipeIngredient] = useState([])
+    const [ingredientToPost, setIngredientToPost] = useState([])
     const [submitted, setSubmitted] = useState(false)
     const [dryHopCheck, setDryHopCheck] = useState(false)
     const [unit, setUnit] = useState("oz")
     const [currentRecipe, setCurrentRecipe] = useState({})
     const [styles, setStyles] = useState([])
     const [steps, setSteps] = useState([])
-    const [currentSteps, setCurrentSteps] = useState([])
+    const [stepsToPost, setStepsToPost] = useState([])
     const [newRecipe, setNewRecipe] = useState({
         description: "",
         name: "",
@@ -29,6 +30,7 @@ export const CreateRecipe = () => {
         pre_boil_volume: 0,
         boil_time: 0
     })
+    //set ingredient model to copy onChange
     const ingredientModel = {
         ingredient: 0,
         quantity: 0,
@@ -36,6 +38,7 @@ export const CreateRecipe = () => {
         use: "",
         time: null
     }
+    //set steps model to copy onChange
     const stepsModel = {
         description: "",
         recipe: 0,
@@ -43,10 +46,10 @@ export const CreateRecipe = () => {
         time: 0,
         amount: null
     }
-    //create new array of newRecipe keys for jsx return
+    //create new array of newRecipe keys to iterate through in jsx return
     const recipeObjKeys = Object.keys(newRecipe)
  
-    //fetch ingredients and beer styles
+    //fetch ingredients and beer styles for select and input fields
     useEffect(
         () => {
             getIngredients()
@@ -56,27 +59,7 @@ export const CreateRecipe = () => {
         },
         []
     )
-
-    //fetch steps for current recipe
-    useEffect(
-        () => {
-        if (currentRecipe.length > 1) {
-            getRecipeSteps(currentRecipe.id)
-                .then(setCurrentSteps)
-        }
-        },
-        []
-    )
-
-    useEffect(
-        () => {
-            if (submitted === true){
-                updateCurrentRecipe()
-            }
-        },
-        [submitted]
-    )
-    
+//<--------------------------------Recipe detail submission functions--------------------------------------------->
     //validate recipe details form
     const validateRecipeDetails = () => {
         if (newRecipe.description && newRecipe.name && newRecipe.style && 
@@ -86,43 +69,50 @@ export const CreateRecipe = () => {
                 createRecipe(newRecipe)
                 //set submitted stat to true - trigger new recipe fetch
                 setSubmitted(true)
+                updateCurrentRecipe()
             }
     }
-
-    //validate ingredients
-    const validateRecipeIngredients = () => {
-        if (recipeIngredients.ingredient && recipeIngredients.quantity && recipeIngredients.use){
-                recipeIngredients.recipe = currentRecipe.id
-                createRecipe(recipeIngredients)
-        }
-    }
-
-    //validate steps
-    const validateSteps = () => {
-        if (steps.description && steps.temperature && steps.time){
-                steps.recipe = currentRecipe.id
-                createSteps(steps)
-        }
-    }
-
+    //get recipe that was just submitted
     const updateCurrentRecipe = () => {
-            getNewestRecipe()
-                .then(setCurrentRecipe)
-        
+        getNewestRecipe()
+            .then(setCurrentRecipe)
     }
-
-    //check if recipe details were posted
-    //fetch recipe ingredients for current recipe
-    useEffect(
-        () => {
-            if (currentRecipe.length > 1){
-            getRecipeIngredients(currentRecipe.id)
-                .then(setRecipeIngredient)
-            }
-        },
-        []
-    )
-
+//<------------------------------------------------------------------------------------------------------------------->
+//<--------------------------------Recipe ingredient submission functions--------------------------------------------->
+    //validate ingredients and add recipeId
+    const validateRecipeIngredients = () => {
+        if (ingredientToPost.ingredient && ingredientToPost.quantity && ingredientToPost.use){
+                ingredientToPost.recipe = currentRecipe.id
+                createRecipeIngredients(ingredientToPost)
+                    .then(updateIngredients)
+        }
+    }
+    //get newly submitted ingredient to display
+    const updateIngredients = () => {
+        getRecipeIngredients(currentRecipe.id)
+            .then(setRecipeIngredient)
+        //reset state
+        setIngredientToPost([])
+    }
+//<------------------------------------------------------------------------------------------------------------------->
+//<--------------------------------Recipe steps submission functions-------------------------------------------------->
+    //validate steps and add recipeId
+    const validateSteps = () => {
+        if (stepsToPost.description && stepsToPost.temperature && stepsToPost.time){
+                stepsToPost.recipe = currentRecipe.id
+                createSteps(stepsToPost)
+                    .then(updateSteps)
+        }
+    }
+    //get newly submitted steps to display
+    const updateSteps = () => {
+        getRecipeSteps(currentRecipe.id)
+            .then(setSteps)
+        //reset state
+        setStepsToPost([])
+    }
+//<------------------------------------------------------------------------------------------------------------------->
+//<--------------------------------Utility functions------------------------------------------------------------------>
     //if quantity is greater than 16oz., convert to lbs.
     const convertUnitToPrint = (ingredientQuantity) => {
 
@@ -135,7 +125,6 @@ export const CreateRecipe = () => {
             return ingredientQuantity
         }
     }
-
     //convert quantity based on unit selected 
     const convertUnitToPost = (ingredientQuantity) => {
 
@@ -146,16 +135,17 @@ export const CreateRecipe = () => {
             return ingredientQuantity
         }
     }
-
-
+//<----------------------------------------------------------------------------------------------------------------->
+//<--------------------------------------------JSX return----------------------------------------------------------->
     return (
 
+//<--------------------------------------------Recipe details display----------------------------------------------->
         // recipe details
         <ContentContainer>
             <MainContent>
                 {submitted ?
                 <>
-                <SubHeader>{newRecipe.name}</SubHeader>
+                <Header>{newRecipe.name}</Header>
                 <Label>Description: </Label> 
                     <Content>{newRecipe.description}</Content>
                 <Label>Style: </Label> 
@@ -178,6 +168,9 @@ export const CreateRecipe = () => {
                     <Content>{newRecipe.boil_time}</Content>
                     </>
                     :
+//*<-----------------------------------------------------------------------------------------------------------------> */}
+//*<-----------------------------------------------Add recipe details form-------------------------------------------> */}
+
             //create input for each field
             <form>
                 {recipeObjKeys.map(
@@ -253,12 +246,13 @@ export const CreateRecipe = () => {
                     }}>Add</button>
             </form>}
             <Line></Line>
-
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Malt table--------------------------------------------------------> */}
+        <Header>Malt</Header>
         {/* table for malt 
         check if recipeIngredients exists */}
-        {recipeIngredients > 1 ?
+        {recipeIngredients.length > 0 ?
         <>
-        <Header>Malt</Header>
         <Table>
             <TableBody>
             <TableHeader>
@@ -269,11 +263,11 @@ export const CreateRecipe = () => {
             </TableHeader>
                 {recipeIngredients.map(
                     (i) => {
-                        if (i.ingredient.type === "Malt"){
+                        if (i.use === "Mash"){
                             return <>
                             <TableRow>
-                            <TableData>{convertUnitToPrint(parseInt(i.quantity))}</TableData>
-                            <TableData>{i.ingredient.name}</TableData>
+                                <TableData>{convertUnitToPrint(parseInt(i.quantity))}</TableData>
+                                <TableData>{i.ingredient.name}</TableData>
                             </TableRow>
                             </>
                         }})}
@@ -281,7 +275,8 @@ export const CreateRecipe = () => {
         </Table>
         </>
         : null}
-
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Add malt form-----------------------------------------------------> */}
         <SubHeader>Add Malt</SubHeader>
         <form>
             <select onChange={(event) => {
@@ -289,7 +284,7 @@ export const CreateRecipe = () => {
                 copy.use = "Mash"
                 copy.time = 0
                 copy.ingredient = parseInt(event.target.value)
-                setRecipeIngredient(copy)
+                setIngredientToPost(copy)
                 }}>
                 <option value="0">Select malt variety</option>
                     {ingredients.map(
@@ -306,32 +301,34 @@ export const CreateRecipe = () => {
                 required="required" 
                 placeholder="Enter quantity"
                 onChange={(event) => {
-                    const copy = { ...recipeIngredients}
+                    const copy = { ...ingredientToPost}
                     copy.quantity = parseInt(event.target.value)
-                    setRecipeIngredient(copy)
+                    setIngredientToPost(copy)
                 }} />
                 {/* dropdown to select unit (oz/lb) */}
             <select onChange={(event) => {
                 setUnit(event.target.value)
-                const copy = { ...recipeIngredients}
+                const copy = { ...ingredientToPost}
                 const convertedQuantity = convertUnitToPost(copy.quantity)
                 copy.quantity = convertedQuantity
-                setRecipeIngredient(copy)
+                setIngredientToPost(copy)
                 }}>
                 <option value="oz">oz.</option>
                 <option value="lb">lb.</option>
             </select>
-        <button type="submit" onClick={() => {
+        <button type="submit" onClick={(evt) => {
+            evt.preventDefault()
             validateRecipeIngredients()
         }}>Add</button>
         </form>
         <Line></Line>
-
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Hops table--------------------------------------------------------> */}
+        <Header>Hops</Header>
         {/* table for hops
         check if recipeIngredients exists */}
-        {recipeIngredients > 1 ?
+        {recipeIngredients.length > 0 ?
         <>
-        <Header>Hops</Header>
         <Table>
             <TableBody>
             <TableHeader>
@@ -339,6 +336,8 @@ export const CreateRecipe = () => {
                     <TH>Amount</TH>
                     <TH>Variety</TH>
                     <TH>Alpha acids</TH>
+                    <TH>Use</TH>
+                    <TH>Time</TH>
                 </TableRow>
             </TableHeader>
                 {recipeIngredients.map(
@@ -346,9 +345,11 @@ export const CreateRecipe = () => {
                         if (i.ingredient.type === "Hops"){
                             return <>
                             <TableRow>
-                            <TableData>{i.quantity} oz</TableData>
-                            <TableData>{i.ingredient.name}</TableData>
-                            <TableData>{i.ingredient.alpha_acids}</TableData>
+                                <TableData>{i.quantity} oz</TableData>
+                                <TableData>{i.ingredient.name}</TableData>
+                                <TableData>{i.ingredient.alpha_acids}</TableData>
+                                <TableData>{i.use}</TableData>
+                                <TableData>{i.time} min.</TableData>
                             </TableRow>
                             </>
                         }})}
@@ -357,14 +358,15 @@ export const CreateRecipe = () => {
         </>
         : null
         }
-
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Add hops form-----------------------------------------------------> */}
         <SubHeader>Add Hops</SubHeader>
         <form>
             {/* select variety */}
             <select onChange={(event) => {
-                const copy = { ...recipeIngredients}
+                const copy = { ...ingredientModel}
                 copy.ingredient = parseInt(event.target.value)
-                setRecipeIngredient(copy)
+                setIngredientToPost(copy)
             }}>
                 <option value="0">Select hop variety</option>
                 {ingredients.map(
@@ -375,33 +377,33 @@ export const CreateRecipe = () => {
                     }
                 )}
             </select>
+            {/* input quantity */}
             <input 
                 type="text" 
                 name="quantity" 
                 placeholder="Enter quantity (oz.)"
                 onChange={(event) => {
-                    const copy = { ...recipeIngredients}
+                    const copy = { ...ingredientToPost}
                     copy.quantity = parseInt(event.target.value)
-                    setRecipeIngredient(copy)
+                    setIngredientToPost(copy)
                 }} />
             {/* select hop use */}
             <select onChange={(event) => {
                 if (event.target.value === "Dry Hop"){
-                    const copy = { ...recipeIngredients}
+                    const copy = { ...ingredientToPost}
                     copy.use = event.target.value
-                    setRecipeIngredient(copy)
+                    setIngredientToPost(copy)
                     setDryHopCheck(true)
                 } else {
-                    const copy = { ...recipeIngredients}
+                    const copy = { ...ingredientToPost}
                     copy.use = event.target.value
-                    setRecipeIngredient(copy)
+                    setIngredientToPost(copy)
                 }
             }}>
                 <option value="0">Select use</option>
                 <option value="Boil">Boil</option>
                 <option value="Dry Hop">Dry Hop</option>
             </select>
-
             {/* check if user selected "Dry Hop" for use */}
             {dryHopCheck ?
             <>
@@ -410,18 +412,18 @@ export const CreateRecipe = () => {
                 name="day" 
                 placeholder="Enter day for hop addition"
                 onChange={(event) => {
-                    const copy = { ...recipeIngredients}
+                    const copy = { ...ingredientToPost}
                     //add dry hop day to use 
                     copy.use += ` - Day ${event.target.value}`
-                    setRecipeIngredient(copy)
+                    setIngredientToPost(copy)
                 }} />
             </>
             : null}
             {/* select time to add hops */}
             <select onChange={(event) => {
-                    const copy = { ...recipeIngredients}
+                    const copy = { ...ingredientToPost}
                     copy.time = event.target.value
-                    setRecipeIngredient(copy)
+                    setIngredientToPost(copy)
                 }
             }>
                 <option value={null}>Select time</option>
@@ -439,22 +441,23 @@ export const CreateRecipe = () => {
                 <option value={5}>5 min.</option>
                 <option value={0}>0 min.</option>
             </select>
-        <button type="submit" onClick={() => {
+        <button type="submit" onClick={(evt) => {
+            evt.preventDefault()
             validateRecipeIngredients()
         }}>Add</button>
         </form>
         <Line></Line>
-
-        {/* table for yeast 
-        check if recipeIngredients exists */}
-        {steps > 1 ?
-        <>
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Mash guidelines table---------------------------------------------> */}
         <Header>Mash Guidelines</Header>
+        {steps.length > 0 ?
+        <>
             <Table>
                 <TableBody>
                 <TableHeader>
                     <TableRow>
                         <TH>Amount</TH>
+                        <TH>Description</TH>
                         <TH>Temperature (°F)</TH>
                         <TH>Time</TH>
                     </TableRow>
@@ -464,17 +467,19 @@ export const CreateRecipe = () => {
                             if (s.amount === null){
                                 return <>
                                 <TableRow>
-                                <TableData>{s.amount}</TableData>
-                                <TableData>{s.temperature}</TableData>
-                                <TableData>{s.time}</TableData>
+                                    <TableData>{s.amount}</TableData>
+                                    <TableData>{s.description}</TableData>
+                                    <TableData>{s.temperature}</TableData>
+                                    <TableData>{s.time}</TableData>
                                 </TableRow>
                             </>
                             } else {
                                 return <>
                                 <TableRow>
-                                <TableData>{s.amount} gal</TableData>
-                                <TableData>{s.temperature}</TableData>
-                                <TableData>{s.time}</TableData>
+                                    <TableData>{s.amount} gal</TableData>
+                                    <TableData>{s.description}</TableData>
+                                    <TableData>{s.temperature}</TableData>
+                                    <TableData>{s.time}</TableData>
                                 </TableRow>
                                 </>
                             }
@@ -483,7 +488,8 @@ export const CreateRecipe = () => {
             </Table>
         </>
         : null}
-
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Add mash guidelines form------------------------------------------> */}
         {/* table for mash guidlines (steps) */}
         <SubHeader>Add Mash Guidelines</SubHeader>
         <form>
@@ -494,12 +500,12 @@ export const CreateRecipe = () => {
                     onChange={(event) => {
                         const copy = { ...stepsModel}
                         copy.amount = parseInt(event.target.value)
-                        setSteps(copy)
+                        setStepsToPost(copy)
             }}/>
             <select onChange={(event) => {
-                const copy = { ...steps}
+                const copy = { ...stepsToPost}
                 copy.description = event.target.value
-                setSteps(copy)
+                setStepsToPost(copy)
             }}>
                 <option value="0">Select mash step</option>
                 <option value="Rest">Rest</option>
@@ -512,41 +518,41 @@ export const CreateRecipe = () => {
                     required="required" 
                     placeholder="Enter temperature (°F)"
                     onChange={(event) => {
-                        const copy = { ...steps}
+                        const copy = { ...stepsToPost}
                         copy.temperature = parseInt(event.target.value)
-                        setSteps(copy)
+                        setStepsToPost(copy)
             }}/>
             <select onChange={(event) => {
-                const copy = { ...steps}
+                const copy = { ...stepsToPost}
                 copy.time = parseInt(event.target.value)
-                setSteps(copy)
+                setStepsToPost(copy)
                 }}>
                 <option value={null}>Select time</option>
-                <option value={60}>60 min.</option>
-                <option value={55}>55 min.</option>
-                <option value={50}>50 min.</option>
-                <option value={45}>45 min.</option>
-                <option value={40}>40 min.</option>
-                <option value={35}>35 min.</option>
-                <option value={30}>30 min.</option>
-                <option value={25}>25 min.</option>
-                <option value={20}>20 min.</option>
-                <option value={15}>15 min.</option>
-                <option value={10}>10 min.</option>
-                <option value={5}>5 min.</option>
-                <option value={0}>0 min.</option>
+                <option value="60">60 min.</option>
+                <option value="55">55 min.</option>
+                <option value="50">50 min.</option>
+                <option value="45">45 min.</option>
+                <option value="40">40 min.</option>
+                <option value="35">35 min.</option>
+                <option value="30">30 min.</option>
+                <option value="25">25 min.</option>
+                <option value="20">20 min.</option>
+                <option value="15">15 min.</option>
+                <option value="10">10 min.</option>
+                <option value="5">5 min.</option>
+                <option value="0">0 min.</option>
             </select>
-        <button type="submit" onClick={() => {
+        <button type="submit" onClick={(evt) => {
+            evt.preventDefault()
             validateSteps()
         }}>Add</button>
         </form>
         <Line></Line>
-
-        {/* table for yeast 
-        check if recipeIngredients exists */}
-        {recipeIngredients > 1 ?
-        <>
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Yeast table-------------------------------------------------------> */}
         <Header>Yeast</Header>
+        {recipeIngredients.length > 0 ?
+        <>
         <Table>
             <TableBody>
                 <TableHeader>
@@ -560,25 +566,25 @@ export const CreateRecipe = () => {
                         if (i.ingredient.type === "Yeast"){
                             return <>
                             <TableRow>
-                            <TableData>{i.ingredient.name}</TableData>
-                            <TableData>{i.quantity}</TableData>
+                                <TableData>{i.ingredient.name}</TableData>
+                                <TableData>{i.quantity}</TableData>
                             </TableRow>
                             </>
                         }})}
             </TableBody>
         </Table>
         </>
-        : null
-        }
-
+        : null}
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Add yeast form----------------------------------------------------> */}
         <SubHeader>Add Yeast</SubHeader>
         <form>
             <select onChange={(event) => {
-                const copy = { ...recipeIngredients}
+                const copy = { ...ingredientModel}
                 copy.use = ""
                 copy.time = null
                 copy.ingredient = parseInt(event.target.value)
-                setRecipeIngredient(copy)
+                setIngredientToPost(copy)
                 }}>
                 <option value="0">Select yeast variety</option>
                     {ingredients.map(
@@ -595,11 +601,12 @@ export const CreateRecipe = () => {
                     required="required" 
                     placeholder="Enter quantity (oz.)"
                     onChange={(event) => {
-                        const copy = { ...recipeIngredients}
+                        const copy = { ...ingredientToPost}
                         copy.quantity = parseInt(event.target.value)
-                        setRecipeIngredient(copy)
+                        setIngredientToPost(copy)
                     }} />
-        <button type="submit" onClick={() => {
+        <button type="submit" onClick={(evt) => {
+            evt.preventDefault()
             validateRecipeIngredients()
         }}>Add</button>
         </form>

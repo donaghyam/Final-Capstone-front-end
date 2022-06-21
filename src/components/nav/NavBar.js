@@ -31,6 +31,7 @@ export const NavBar = () => {
                 </Link>
               </h1>
           </div>
+          <div id="navBorder"></div>
           <div id="navContainer">
           <div className="navbar-item">
                 <Link to="/recipes" className="navbar-link">Browse Recipes</Link>

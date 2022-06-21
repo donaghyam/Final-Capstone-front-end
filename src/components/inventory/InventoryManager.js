@@ -16,3 +16,7 @@ export const addInventory = (newIngredient) => {
 export const updateInventory = (newIngredient, id) => {
   return fetchIt(`${Settings.API}/user_ingredients/${id}`, "PUT", newIngredient)
 }
+
+export const deleteInventory = (id) => {
+  return fetchIt(`${Settings.API}/user_ingredients/${id}`, "DELETE")
+}
