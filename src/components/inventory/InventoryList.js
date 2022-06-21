@@ -10,6 +10,9 @@ export const InventoryList = () => {
     const [inventory, setInventory] = useState([])
     const [ingredients, setIngredients] = useState([])
     const [editing, setEditing] = useState(false)
+    // const [editingMalt, setEditingMalt] = useState(false)
+    // const [editingHops, setEditingHops] = useState(false)
+    // const [editingYeast, setEditingYeast] = useState(false)
     const [newIngredient, setNewIngredient] = useState({
         ingredient: 0,
         quantity: 0
@@ -31,57 +34,44 @@ export const InventoryList = () => {
         []
     )
 
-    // const checkInvToUpdate = () => {
-
-    //     let ingredientExists = false
-
-    //     for (const i of inventory) {
-    //         if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false && editing === false){
-    //             ingredientExists = true
-    //             const updatedIngredient = { ...i}
-    //             const newQuantity = newIngredient.quantity + i.quantity
-    //             updatedIngredient.quantity = newQuantity
-    //             updateInventory(updatedIngredient, i.id)
-    //         } else if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false && editing === true){
-    //             ingredientExists = true
-    //             updateInventory(newIngredient, i.id)
-    //                 .then(() => {
-    //                     setEditing(false)
-    //                     getInventory()
-    //                         .then(setInventory)
-
-    //                 })
+    // useEffect(
+    //     () => {
+    //         if (editingMalt || editingHops || editingYeast){
+    //             setEditing(true)
     //         }
-    //     }
-    //         if (ingredientExists === false){
-    //             addInventory(newIngredient)
-    //         }
-    // }
+    //     },
+    //     [newIngredient]
+    // )
 
     const checkInvToUpdate = () => {
 
         let ingredientExists = false
 
         for (const i of inventory) {
-            //update quantity
-            if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false && editing === false){
-                ingredientExists = true
-                const updatedIngredient = { ...i}
-                const newQuantity = newIngredient.quantity + i.quantity
-                updatedIngredient.quantity = newQuantity
-                updatedIngredient.ingredient = i.ingredient?.id
-                updateInventory(updatedIngredient, i.id)
-            //edit quantity
-            } else if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false && editing === true){
-                ingredientExists = true
-                updateInventory(newIngredient, i.id)
-                    .then(() => {
-                        setEditing(false)
-                        getInventory()
-                            .then(setInventory)
-                    })
+            //check if ingredient already exists in inventory
+            if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false){
+                //if not editing, add new ingredient quantity to existing ingredient quantity
+                //for PUT
+                if (editing === false){
+                    ingredientExists = true
+                    const updatedIngredient = { ...i}
+                    const newQuantity = newIngredient.quantity + i.quantity
+                    updatedIngredient.quantity = newQuantity
+                    updatedIngredient.ingredient = i.ingredient?.id
+                    updateInventory(updatedIngredient, i.id)
+                //if editing, update quantity for PUT
+                } else if (editing === true){
+                    ingredientExists = true
+                    updateInventory(newIngredient, i.id)
+                        .then(() => {
+                            setEditing(false)
+                            getInventory()
+                                .then(setInventory)
+                        })
+                }
             }
         }
+            //ingredient POST
             if (ingredientExists === false){
                 addInventory(newIngredient)
             }

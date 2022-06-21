@@ -10,8 +10,10 @@ export const CreateRecipe = () => {
     const [recipeIngredients, setRecipeIngredient] = useState([])
     const [ingredientToPost, setIngredientToPost] = useState([])
     const [submitted, setSubmitted] = useState(false)
+    const [submittedHops, setSubmittedHops] = useState(false)
+    const [submittedMalt, setSubmittedMalt] = useState(false)
+    const [submittedYeast, setSubmittedYeast] = useState(false)
     const [dryHopCheck, setDryHopCheck] = useState(false)
-    const [unit, setUnit] = useState("oz")
     const [currentRecipe, setCurrentRecipe] = useState({})
     const [styles, setStyles] = useState([])
     const [steps, setSteps] = useState([])
@@ -65,11 +67,11 @@ export const CreateRecipe = () => {
         if (newRecipe.description && newRecipe.name && newRecipe.style && 
             newRecipe.starting_gravity && newRecipe.final_gravity && newRecipe.abv && 
             newRecipe.ibu && newRecipe.srm && newRecipe.mash_ph && newRecipe.batch_volume &&
-            newRecipe.pre_boil_volume && newRecipe.boil_time && newRecipe.description){
-                createRecipe(newRecipe)
+            newRecipe.pre_boil_volume && newRecipe.boil_time && newRecipe.description && submitted === false){
                 //set submitted stat to true - trigger new recipe fetch
                 setSubmitted(true)
-                updateCurrentRecipe()
+                createRecipe(newRecipe)
+                .then(updateCurrentRecipe)
             }
     }
     //get recipe that was just submitted
@@ -126,13 +128,13 @@ export const CreateRecipe = () => {
         }
     }
     //convert quantity based on unit selected 
-    const convertUnitToPost = (ingredientQuantity) => {
+    const convertUnitToPost = (unit, quantity) => {
 
         if (unit === "lb"){
-            const newIngredient = ingredientQuantity * 16
-            return newIngredient
+            const newQuantity = quantity * 16
+            return newQuantity
         } else {
-            return ingredientQuantity
+            return quantity
         }
     }
 //<----------------------------------------------------------------------------------------------------------------->
@@ -170,7 +172,6 @@ export const CreateRecipe = () => {
                     :
 //*<-----------------------------------------------------------------------------------------------------------------> */}
 //*<-----------------------------------------------Add recipe details form-------------------------------------------> */}
-
             //create input for each field
             <form>
                 {recipeObjKeys.map(
@@ -251,7 +252,7 @@ export const CreateRecipe = () => {
         <Header>Malt</Header>
         {/* table for malt 
         check if recipeIngredients exists */}
-        {recipeIngredients.length > 0 ?
+        {recipeIngredients.length > 0 && submittedMalt ?
         <>
         <Table>
             <TableBody>
@@ -307,9 +308,10 @@ export const CreateRecipe = () => {
                 }} />
                 {/* dropdown to select unit (oz/lb) */}
             <select onChange={(event) => {
-                setUnit(event.target.value)
                 const copy = { ...ingredientToPost}
-                const convertedQuantity = convertUnitToPost(copy.quantity)
+                const unit = event.target.value
+                const quantity = copy.quantity
+                const convertedQuantity = convertUnitToPost(unit, quantity)
                 copy.quantity = convertedQuantity
                 setIngredientToPost(copy)
                 }}>
@@ -319,6 +321,7 @@ export const CreateRecipe = () => {
         <button type="submit" onClick={(evt) => {
             evt.preventDefault()
             validateRecipeIngredients()
+            setSubmittedMalt(true)
         }}>Add</button>
         </form>
         <Line></Line>
@@ -327,7 +330,7 @@ export const CreateRecipe = () => {
         <Header>Hops</Header>
         {/* table for hops
         check if recipeIngredients exists */}
-        {recipeIngredients.length > 0 ?
+        {recipeIngredients.length > 0 && submittedHops?
         <>
         <Table>
             <TableBody>
@@ -444,6 +447,7 @@ export const CreateRecipe = () => {
         <button type="submit" onClick={(evt) => {
             evt.preventDefault()
             validateRecipeIngredients()
+            setSubmittedHops(true)
         }}>Add</button>
         </form>
         <Line></Line>
@@ -551,7 +555,7 @@ export const CreateRecipe = () => {
 {/*<-----------------------------------------------------------------------------------------------------------------> */}
 {/*<-----------------------------------------------Yeast table-------------------------------------------------------> */}
         <Header>Yeast</Header>
-        {recipeIngredients.length > 0 ?
+        {recipeIngredients.length > 0 && submittedYeast ?
         <>
         <Table>
             <TableBody>
@@ -581,7 +585,7 @@ export const CreateRecipe = () => {
         <form>
             <select onChange={(event) => {
                 const copy = { ...ingredientModel}
-                copy.use = ""
+                copy.use = "Fermentation"
                 copy.time = null
                 copy.ingredient = parseInt(event.target.value)
                 setIngredientToPost(copy)
@@ -608,6 +612,7 @@ export const CreateRecipe = () => {
         <button type="submit" onClick={(evt) => {
             evt.preventDefault()
             validateRecipeIngredients()
+            setSubmittedYeast(true)
         }}>Add</button>
         </form>
         </MainContent>
