@@ -42,9 +42,6 @@ export const NavBar = () => {
           <div className="navbar-item">
                 <Link to="/inventory" className="navbar-link">My inventory</Link>
           </div>
-          <div className="navbar-item">
-                <Link to="/mybrews" className="navbar-link">My Brews</Link>
-          </div>
           </div>
           </>
           :

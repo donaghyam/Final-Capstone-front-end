@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export const Label = styled.label`
-    font-size: 14px;
+    font-size: 16px;
     color: #0B1320;
     text-transform: capitalize;
     font-weight: 600;
@@ -19,18 +19,20 @@ export const Header = styled.h1`
     display: flex;
     justify-content: center;
     margin-bottom: 0px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 1;
+    font-weight: 600;
 `
 
 export const SubHeader = styled.h2`
-    font-size: 14px;
+    font-size: 16px;
     color: #0B1320;
     padding-left: 10px;
     padding-top: 10px;
+    padding-bottom: 5px;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 1;
+    font-weight: 1000;
 `
 
 export const PageTitle = styled.h1`
@@ -41,7 +43,7 @@ export const PageTitle = styled.h1`
     display: flex;
     justify-content: center;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 1;
+    font-weight: 600;
 `
 
 export const WelcomeMessage = styled.h1`
@@ -52,7 +54,7 @@ export const WelcomeMessage = styled.h1`
     display: flex;
     justify-content: center;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 1;
+    font-weight: 500;
     animation: fadeInAnimation ease 500ms;
     @keyframes fadeInAnimation {
     0% {
@@ -71,7 +73,7 @@ export const ThankYouMessage = styled.h1`
     display: flex;
     justify-content: center;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 1;
+    font-weight: 900;
     animation: fadeInAnimation ease 2500ms;
     @keyframes fadeInAnimation {
     0% {

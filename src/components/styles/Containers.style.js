@@ -51,6 +51,10 @@ export const RecipeCard = styled.div`
     align-items: flex-end;
     justify-content: center;
     border: 1px solid lightgrey;
+    :hover {
+        opacity: 80%;
+        box-shadow: 5px 5px 15px grey;
+    }
 `
 
 export const ImageContainer = styled.div`
