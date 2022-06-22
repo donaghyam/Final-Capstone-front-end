@@ -99,7 +99,7 @@ button {
     padding: 0.25em 0.75em;
     transition-duration: 0.4s;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 350;
+    font-weight:1000;
     margin-top: 10px;
     margin-bottom: 25px;
     margin-left: 15px;
@@ -141,4 +141,5 @@ button:hover {
     font-weight: 1;
     color: #394D5F;
     display: inline-block;
+    
 }
