@@ -16,7 +16,7 @@ export const NavBar = () => {
           }}>
             Logout
           </button>
-          </div>
+        </div>
           <div id="titleContainer">
               <h1 id="title">
             <div id="hexContainer">

@@ -49,3 +49,16 @@ export const createSteps = (steps) => {
   return fetchIt(`${Settings.API}/steps`, "POST", steps)
 }
 
+/////////////////////////// NEW /////////////////////////////////////////////
+
+// export const createCompiledIngredient = (ingredient) => {
+//   return fetchIt(`${Settings.API}/compiled_ingredients`, "POST", ingredient)
+// }
+
+// export const updateCompiledRecipeIngredient = (ingredient, id) => {
+//   return fetchIt(`${Settings.API}/compiled_ingredients/${id}`, "PUT", ingredient)
+// }
+
+// export const getCompiledRecipeIngredients = (id) => {
+//   return fetchIt(`${Settings.API}/compiled_ingredients?recipe=${id}`)
+// }

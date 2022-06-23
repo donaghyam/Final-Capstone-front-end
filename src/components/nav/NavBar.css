@@ -29,8 +29,6 @@
     justify-content: center;
     margin-top: 0px;
     margin-bottom: 0px;
-    /* font-family: 'Ramsey', sans-serif; */
-    
 }
 
 #titleLink{
@@ -40,11 +38,9 @@
     width: 100%;
     text-decoration: none;
     color: #0B1320;
-    /* font-family: 'Ramsey', sans-serif; */
     font-family: 'Montserrat', sans-serif;
     font-weight: 1;
-    margin-top: 18px;
-    /* background-image: linear-gradient(60deg, #E21143, #FFB03A); */
+    margin-top: 21px;
     background-image: linear-gradient(60deg, #0B1320, #FFB03A);
     background-clip: text;
     color: transparent;
@@ -165,5 +161,4 @@
     border-top: 30px solid #FFB03A;
     border-left: 52px solid transparent;
     border-right: 52px solid transparent;
-    /* border-radius: 12px; */
 }
