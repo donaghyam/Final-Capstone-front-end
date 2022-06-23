@@ -10,9 +10,9 @@ export const InventoryList = () => {
     const [inventory, setInventory] = useState([])
     const [ingredients, setIngredients] = useState([])
     const [editing, setEditing] = useState(false)
-    // const [editingMalt, setEditingMalt] = useState(false)
-    // const [editingHops, setEditingHops] = useState(false)
-    // const [editingYeast, setEditingYeast] = useState(false)
+    const [editingMalt, setEditingMalt] = useState(false)
+    const [editingHops, setEditingHops] = useState(false)
+    const [editingYeast, setEditingYeast] = useState(false)
     const [newIngredient, setNewIngredient] = useState({
         ingredient: 0,
         quantity: 0
@@ -34,14 +34,16 @@ export const InventoryList = () => {
         []
     )
 
-    // useEffect(
-    //     () => {
-    //         if (editingMalt || editingHops || editingYeast){
-    //             setEditing(true)
-    //         }
-    //     },
-    //     [newIngredient]
-    // )
+    useEffect(
+        () => {
+            if (editingMalt || editingHops || editingYeast){
+                setEditing(true)
+            } else {
+                setEditing(false)
+            }
+        },
+        [newIngredient]
+    )
 
     const checkInvToUpdate = () => {
 
@@ -75,6 +77,9 @@ export const InventoryList = () => {
             if (ingredientExists === false){
                 addInventory(newIngredient)
             }
+        setEditingHops(false)
+        setEditingMalt(false)
+        setEditingYeast(false)
     }
 
     const convertUnits = (ingredient) => {
@@ -88,16 +93,6 @@ export const InventoryList = () => {
             return ingredient
         }
     }
-    //convert quantity based on unit selected 
-    // const convertUnitToPost = (ingredientQuantity) => {
-
-    //     if (unit === "lb"){
-    //         const newIngredient = ingredientQuantity * 16
-    //         return newIngredient
-    //     } else {
-    //         return ingredientQuantity
-    //     }
-    // }
 
     return (
 
@@ -122,7 +117,7 @@ export const InventoryList = () => {
                         if (i.ingredient.type === "Malt"){
                             return <>
                             <TableRow>
-                                {editing ? 
+                                {editingMalt ? 
                                     <TableData>
                                         <input 
                                             type="text" 
@@ -145,9 +140,9 @@ export const InventoryList = () => {
                                 <TableData>{i.ingredient.name}</TableData>
                                 <TableData>
                                         <button onClick={() => {
-                                            editing ?
-                                            setEditing(false)
-                                            : setEditing(true)
+                                            editingMalt ?
+                                            setEditingMalt(false)
+                                            : setEditingMalt(true)
                                         }}>Edit quantity</button>
                                         <button onClick={() => {
                                             deleteInventory(i.id)
@@ -209,7 +204,7 @@ export const InventoryList = () => {
                         if (i.ingredient.type === "Hops"){
                             return <>
                             <TableRow>
-                            {editing ? 
+                            {editingHops ? 
                                     <TableData>
                                         <input 
                                             type="text" 
@@ -234,9 +229,9 @@ export const InventoryList = () => {
                                 <TableData>{i.ingredient.alpha_acids}</TableData>
                                 <TableData>
                                         <button onClick={() => {
-                                            editing ?
-                                            setEditing(false)
-                                            : setEditing(true)
+                                            editingHops ?
+                                            setEditingHops(false)
+                                            : setEditingHops(true)
                                         }}>Edit quantity</button>
                                         <button onClick={() => {
                                             deleteInventory(i.id)
@@ -296,7 +291,7 @@ export const InventoryList = () => {
                         if (i.ingredient.type === "Yeast"){
                             return <>
                             <TableRow>
-                            {editing ? 
+                            {editingYeast ? 
                                     <TableData>
                                         <input 
                                             type="text" 
@@ -310,7 +305,6 @@ export const InventoryList = () => {
                                                 setNewIngredient(copy)
                                             }} />
                                             <button onClick={()=> {
-
                                                 checkInvToUpdate()
                                             }}>Update</button>
                                     </TableData>
@@ -320,9 +314,9 @@ export const InventoryList = () => {
                                 <TableData>{i.ingredient.name}</TableData>
                                 <TableData>
                                         <button onClick={() => {
-                                            editing ?
-                                            setEditing(false)
-                                            : setEditing(true)
+                                            editingYeast ?
+                                            setEditingYeast(false)
+                                            : setEditingYeast(true)
                                         }}>Edit quantity</button>
                                         <button onClick={() => {
                                             deleteInventory(i.id)
