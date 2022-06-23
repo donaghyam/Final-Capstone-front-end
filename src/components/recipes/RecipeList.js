@@ -6,30 +6,33 @@ import { getAllRecipes, getRecipesByInventory } from "./RecipeManager"
 import { Link, useHistory } from "react-router-dom"
 
 export const RecipeList = () => {
+//<--------------------------------------------Initial setup--------------------------------------------------------> 
     const [recipes, setRecipes] = useState([])
     const [inventoryFilter, setFilterStatus] = useState(false)
-    const history = useHistory()
-
     useEffect(
         () => {
+            //fetch by user inventory if true
             inventoryFilter ?
             getRecipesByInventory()
                 .then(setRecipes)
             : 
+            //else, fetch all
             getAllRecipes()
             .then(setRecipes)
         },
         [inventoryFilter]
     )
-
+//<------------------------------------------------------------------------------------------------------------------->
+//<--------------------------------Utility functions------------------------------------------------------------------>
     const toggleFilter = () => {
         inventoryFilter ?
         setFilterStatus(false)
         : setFilterStatus(true)
     }
-
+//<----------------------------------------------------------------------------------------------------------------->
+//<--------------------------------------------JSX return----------------------------------------------------------->
     return (
-
+//<--------------------------------------------Recipe list display-------------------------------------------------->
         <ContentContainer>
             <MainContent>
                 <div id="filterContainer">

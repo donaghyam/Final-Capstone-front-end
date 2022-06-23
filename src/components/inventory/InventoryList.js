@@ -7,6 +7,7 @@ import { Table, TableBody, TableData, TableHeader, TableRow, TH } from "../style
 
 
 export const InventoryList = () => {
+//<--------------------------------------------Initial setup--------------------------------------------------------> 
     const [inventory, setInventory] = useState([])
     const [ingredients, setIngredients] = useState([])
     const [editing, setEditing] = useState(false)
@@ -17,7 +18,6 @@ export const InventoryList = () => {
         ingredient: 0,
         quantity: 0
     })
-
     useEffect(
         () => {
             getIngredients()
@@ -25,7 +25,6 @@ export const InventoryList = () => {
         },
         []
     )
-
     useEffect(
         () => {
             getInventory()
@@ -33,7 +32,7 @@ export const InventoryList = () => {
         },
         []
     )
-
+    //when editing malt, hops, or yeast, set editing to true
     useEffect(
         () => {
             if (editingMalt || editingHops || editingYeast){
@@ -44,11 +43,10 @@ export const InventoryList = () => {
         },
         [newIngredient]
     )
-
+//<------------------------------------------------------------------------------------------------------------------->
+//<--------------------------------Inventory submission function-------------------------------------------------->
     const checkInvToUpdate = () => {
-
         let ingredientExists = false
-
         for (const i of inventory) {
             //check if ingredient already exists in inventory
             if (newIngredient.ingredient === i.ingredient?.id && ingredientExists === false){
@@ -77,13 +75,14 @@ export const InventoryList = () => {
             if (ingredientExists === false){
                 addInventory(newIngredient)
             }
+        //reset state for editing
         setEditingHops(false)
         setEditingMalt(false)
         setEditingYeast(false)
     }
-
+//<------------------------------------------------------------------------------------------------------------------->
+//<--------------------------------Utility functions------------------------------------------------------------------>
     const convertUnits = (ingredient) => {
-
         if (ingredient >= 16){
             let newIngredient = ingredient/16
             newIngredient += " lb"
@@ -93,15 +92,16 @@ export const InventoryList = () => {
             return ingredient
         }
     }
-
+//<----------------------------------------------------------------------------------------------------------------->
+//<--------------------------------------------JSX return----------------------------------------------------------->
     return (
 
         <ContentContainer>
             <MainContent>
                 <PageTitle>Your inventory</PageTitle>
                 <Line></Line>
-
-         {/* table for malt */}
+{/* <-----------------------------------------------------------------------------------------------------------------> */}
+{/* <--------------------------------------------Malt inventory table-----------------------------------------------> */}
         <Header>Malt</Header>
         <Table>
             <TableBody>
@@ -155,6 +155,8 @@ export const InventoryList = () => {
                         }})}
             </TableBody>
         </Table>
+{/* <-----------------------------------------------------------------------------------------------------------------> */}
+{/* <--------------------------------------------Add malt form--------------------------------------------------------> */}
         <SubHeader>Add Malt</SubHeader>
         <form>
             <select onChange={(event) => {
@@ -186,8 +188,8 @@ export const InventoryList = () => {
         }}>Add</button>
         </form>
         <Line></Line>
-
-        {/* table for hops */}
+{/* *<----------------------------------------------------------------------------------------------------------------->  */}
+{/* *<-----------------------------------------------Hops inventory table----------------------------------------------> */}
         <Header>Hops</Header>
         <Table>
             <TableBody>
@@ -244,6 +246,8 @@ export const InventoryList = () => {
                         }})}
             </TableBody>
         </Table>
+{/* <-----------------------------------------------------------------------------------------------------------------> */}
+{/* <--------------------------------------------Add Hops form--------------------------------------------------------> */}
         <SubHeader>Add Hops</SubHeader>
         <form>
             <select onChange={(event) => {
@@ -274,8 +278,8 @@ export const InventoryList = () => {
         }}>Add</button>
         </form>
         <Line></Line>
-
-        {/* table for yeast */}
+{/* *<----------------------------------------------------------------------------------------------------------------->  */}
+{/* *<-----------------------------------------------Yeast inventory table----------------------------------------------> */}
         <Header>Yeast</Header>
         <Table>
             <TableBody>
@@ -329,6 +333,8 @@ export const InventoryList = () => {
                         }})}
             </TableBody>
         </Table>
+{/* <-----------------------------------------------------------------------------------------------------------------> */}
+{/* <--------------------------------------------Add yeast form--------------------------------------------------------> */}
         <SubHeader>Add Yeast</SubHeader>
         <form>
             <select onChange={(event) => {

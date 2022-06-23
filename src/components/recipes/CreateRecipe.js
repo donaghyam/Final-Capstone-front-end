@@ -6,10 +6,9 @@ import { getIngredients } from "../inventory/InventoryManager"
 import { createRecipe, createRecipeIngredients, createSteps, getNewestRecipe, getRecipeIngredients, getRecipeSteps, getStyles } from "./RecipeManager"
 
 export const CreateRecipe = () => {
+//<--------------------------------------------Initial setup--------------------------------------------------------> 
     const [ingredients, setIngredients] = useState([])
     const [recipeIngredients, setRecipeIngredient] = useState([])
-    // const [compiledRecipeIngredients, setCompiledRecipeIngredient] = useState([])
-    // const [ingredientsToCheck, setIngredientsToCheck] = useState([])
     const [ingredientToPost, setIngredientToPost] = useState([])
     const [submitted, setSubmitted] = useState(false)
     const [submittedHops, setSubmittedHops] = useState(false)
@@ -52,7 +51,6 @@ export const CreateRecipe = () => {
     }
     //create new array of newRecipe keys to iterate through in jsx return
     const recipeObjKeys = Object.keys(newRecipe)
- 
     //fetch ingredients and beer styles for select and input fields
     useEffect(
         () => {
@@ -63,6 +61,7 @@ export const CreateRecipe = () => {
         },
         []
     )
+//<---------------------------------------------------------------------------------------------------------------> 
 //<--------------------------------Recipe detail submission functions--------------------------------------------->
     //validate recipe details form
     const validateRecipeDetails = () => {
@@ -87,11 +86,6 @@ export const CreateRecipe = () => {
     const validateRecipeIngredients = () => {
         if (ingredientToPost.ingredient && ingredientToPost.quantity && ingredientToPost.use){
                 ingredientToPost.recipe = currentRecipe.id
-                //set state with ingredient
-                //setCompiledRecipeIngredient(ingredientToPost)
-                    //check if ingredient in state is a duplicate
-                    //.then(checkDuplicates)
-                //post ingredient, then update state
                 createRecipeIngredients(ingredientToPost)
                     .then(updateIngredients)
         }
@@ -103,38 +97,6 @@ export const CreateRecipe = () => {
         //reset state
         setIngredientToPost([])
     }
-
-    // const checkDuplicates = () => {
-    //     //check if this is the first ingredient to post
-    //     if (ingredientsToCheck.length < 1){
-    //         createCompiledIngredient(compiledRecipeIngredients)
-    //             .then(updateCompiledIngredients)
-    //     //if ingredients have been posted
-    //     } else if (ingredientsToCheck.length > 0) {
-    //         //find ingredients that have the matching ingredients
-    //         const duplicate = ingredientsToCheck.find(i => i.ingredient === compiledRecipeIngredients.ingredient)
-    //         //if found, combine quantities of new ingredient and matched ingredient
-    //         if (duplicate.length > 0){
-    //             const updatedIngredient = { ...compiledRecipeIngredients}
-    //             const newQuantity = compiledRecipeIngredients.quantity + dryHopCheck.quantity
-    //             updatedIngredient.quantity = newQuantity
-    //             updatedIngredient.ingredient = compiledRecipeIngredients.ingredient?.id
-    //             //PUT updated ingredient
-    //             updateCompiledRecipeIngredient(updatedIngredient, compiledRecipeIngredients.id)
-    //         //if no duplicates are found, post new ingredient
-    //         } else {
-    //             createCompiledIngredient(compiledRecipeIngredients)
-    //                 .then(updateCompiledIngredients)
-    //         }
-    //     }
-    // }
-
-    // const updateCompiledIngredients = () => {
-    //     getCompiledRecipeIngredients(currentRecipe.id)
-    //         .then(setIngredientsToCheck)
-    //     //reset state
-    //     setCompiledRecipeIngredient([])
-    // }
 //<------------------------------------------------------------------------------------------------------------------->
 //<--------------------------------Recipe steps submission functions-------------------------------------------------->
     //validate steps and add recipeId

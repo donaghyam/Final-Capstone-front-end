@@ -6,11 +6,11 @@ import { Content, Label, SubHeader, Header } from "../styles/Text.style"
 import { getRecipeIngredients, getRecipeSteps, getSingleRecipe } from "./RecipeManager"
 
 export const RecipeDetails = () => {
+//<--------------------------------------------Initial setup--------------------------------------------------------> 
     const [ingredients, setIngredients] = useState([])
     const [recipe, setRecipe] = useState({})
     const [steps, setSteps] = useState([])
     const { recipeId } = useParams()
-
     useEffect(
         () => {
             getSingleRecipe(recipeId)
@@ -28,9 +28,10 @@ export const RecipeDetails = () => {
         },
         []
     )
-
+//<------------------------------------------------------------------------------------------------------------------->
+//<--------------------------------Utility functions------------------------------------------------------------------>
+    //function to convert units between lb and oz
     const convertUnits = (ingredient) => {
-
         if (ingredient >= 16){
             let newIngredient = ingredient/16
             newIngredient += " lb"
@@ -39,15 +40,13 @@ export const RecipeDetails = () => {
             ingredient += " oz"
             return ingredient
         }}
-
+//<----------------------------------------------------------------------------------------------------------------->
+//<--------------------------------------------JSX return----------------------------------------------------------->
     return (
-
+//<--------------------------------------------Recipe details display----------------------------------------------->
         <ContentContainer>
             <MainContent>
-        
-            {/* list recipe stats */}
             <Header>{recipe.name}</Header>
-
             <DescriptionContainer>
                 <DescriptionLabelColumn>
                     <Label>Description: </Label> 
@@ -129,8 +128,8 @@ export const RecipeDetails = () => {
                 </DescriptionContentColumn>
             </DescriptionContainer>
             <Line></Line>
-
-            {/* table for fermentables (malt) */}
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Malt table--------------------------------------------------------> */}
             <SubHeader>Fermentables</SubHeader>
             <TableContainer>
             <Table>
@@ -155,8 +154,8 @@ export const RecipeDetails = () => {
             </Table>
             </TableContainer>
             <Line></Line>
-
-            {/* table for hops */}
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Hops table--------------------------------------------------------> */}
             <SubHeader>Hops</SubHeader>
             <TableContainer>
             <Table>
@@ -190,8 +189,8 @@ export const RecipeDetails = () => {
             </Table>
             </TableContainer>
             <Line></Line>
-
-            {/* table for mash guidelines (steps) */}
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Mash guidelines table--------------------------------------------------------> */}
             <SubHeader>Mash Guidelines</SubHeader>
             <TableContainer>
             <Table>
@@ -227,8 +226,8 @@ export const RecipeDetails = () => {
             </Table>
             </TableContainer>
             <Line></Line>
-
-            {/* table for yeast */}
+{/*<-----------------------------------------------------------------------------------------------------------------> */}
+{/*<-----------------------------------------------Yeast table--------------------------------------------------------> */}
             <SubHeader>Yeast</SubHeader>
             <TableContainer>
             <Table>

@@ -1,7 +1,6 @@
 import styled from "styled-components"
 
 export const Table = styled.table`
-    /* background-color: #394D5F; */
     background-color: #0B1320;
     opacity: 85%;
     border: 1px solid;
