@@ -20,8 +20,8 @@ export const CreateRecipe = () => {
     const [steps, setSteps] = useState([])
     const [stepsToPost, setStepsToPost] = useState([])
     const [newRecipe, setNewRecipe] = useState({
-        description: "",
         name: "",
+        description: "",
         style: 0,
         starting_gravity: 0,
         final_gravity: 0,
