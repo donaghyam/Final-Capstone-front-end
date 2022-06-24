@@ -44,8 +44,8 @@ export const ColumnContainer = styled.div`
 
 export const RecipeCard = styled.div`
     background-color: white;
-    height: 200px;
-    width: 200px;
+    height: 300px;
+    width: 300px;
     margin: 10px;
     display: flex;
     align-items: flex-end;
@@ -58,8 +58,8 @@ export const RecipeCard = styled.div`
 `
 
 export const ImageContainer = styled.div`
-    height: 150px;
-    width: 150px;
+    height: 250px;
+    width: 250px;
     display: flex;
     justify-content: center;
 `
