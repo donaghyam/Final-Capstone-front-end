@@ -6,7 +6,7 @@ This application was created to assist home brewers in finding recipes based on 
 ‣ The user may view all recipes, or filter recipes that they are able
 ‣ to make based on their inventory
 ‣ Inventory can be created, edited, and deleted by the creator
-Application was created with React and Django
+‣ Application was created with React and Django
 </p>
 
 <h3 align="left">Built With</h3>
@@ -20,7 +20,7 @@ Application was created with React and Django
 
 <ul align="left">
   <li>Clone this repo</li>
-  <li>Clone <a href="https://github.com/donaghyam/capstone-front-end-api" target="blank">API</a></li>
+  <li>Clone <a href="https://github.com/donaghyam/Final-Capstone-front-end" target="blank">API</a></li>
   <li>Open a different terminal window or tab and navigate to the project directory</li>
   <li>In the project directory run <code>npm start</code></li>
   <li>In a browser, open localhost:3000 and you should see the app running.</li>
