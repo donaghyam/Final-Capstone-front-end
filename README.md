@@ -32,6 +32,7 @@ This application was created to assist home brewers in finding recipes based on 
   <li>Open a different terminal window or tab and navigate to the project directory</li>
   <li>In the project directory run <code>npm start</code></li>
   <li>In a browser, open localhost:3000 and you should see the app running.</li>
+  <li>To login with some existing data entered in user inventory, the username is 'Adam' and the password is 'me'.</li>
 </ul>
 
 <br></br>
